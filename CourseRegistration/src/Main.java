@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -16,9 +17,15 @@ public class Main {
 
 
     public static void main(String[] args) {
+        HashMap<Integer , String> roaster = new HashMap<>();
 
+        roaster.put(311,"");
+        roaster.put(411,"");
+        roaster.put(583,"");
+        roaster.put(531,"");
       String input = null;
         while (input != "exit") {
+            System.out.println("----------------------------------------------------------------------------");
             System.out.println("Please select a option from the given list to continue further.");
             options();
             System.out.print("Enter the option here :");
@@ -30,13 +37,13 @@ public class Main {
                     student.studentInfo();
 
                 else if(Objects.equals(input, "2"))
-                    course.enrollCourses();
+                    course.enrollCourses(roaster);
 
                 else if(Objects.equals(input, "3"))
                     course.displayCourseDetails();
 
                 else if(Objects.equals(input, "4"))
-                    course.displayCourseRoaster();
+                    course.displayCourseRoaster(roaster);
 
                 else if(Objects.equals(input, "5"))
                     course.displayStudentSchedule();

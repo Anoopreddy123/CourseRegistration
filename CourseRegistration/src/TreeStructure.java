@@ -108,6 +108,7 @@ class AVLTree {
 
         return balanceNode(node);
     }
+    //
 
     // Function to perform an inorder traversal of the AVL Tree
     void inorderTraversal(TreeNode node) {
@@ -156,6 +157,27 @@ class AVLTree {
 
             retrieveAndPrintCoursesRecursive(node.right, targetStudentId);
         }
+    }
+
+    public static void inOrderTraversal(TreeNode node, LinkedList<Integer> linkedList) {
+        if (node == null) {
+            return;
+        }
+
+        // Recursively traverse the left subtree
+        inOrderTraversal(node.left, linkedList);
+
+        // Insert the current node's data into the linked list
+        linkedList.add(node.studentId);
+
+        // Recursively traverse the right subtree
+        inOrderTraversal(node.right, linkedList);
+    }
+
+    public static Set returnCourseId(TreeNode node){
+
+        return node.courseIds;
+
     }
 
 }
