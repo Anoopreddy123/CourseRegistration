@@ -110,45 +110,58 @@ class AVLTree {
     }
 
 
-
-    static void delete(TreeNode root, int key) {
-        AVLTree.root = deleteNode(AVLTree.root, key);
+    public static void deleteByCourseId(int courseIdToDelete) {
+        root = deleteByCourseIdRecursive(root, courseIdToDelete);
     }
-    static TreeNode deleteNode(TreeNode root, int key) {
-        if (root == null)
-            return root;
 
-        if (key < root.studentId)
-            root.left = deleteNode(root.left, key);
-        else if (key > root.studentId)
-            root.right = deleteNode(root.right, key);
-        else {
-            if ((root.left == null) || (root.right == null)) {
-                TreeNode temp = (root.left != null) ? root.left : root.right;
-                if (temp == null) {
-                    temp = root;
-                    root = null;
-                } else
-                    root = temp;
-            } else {
-                TreeNode temp = minValueNode(root.right);
-                root.studentId = temp.studentId;
-                root.right = deleteNode(root.right, temp.studentId);
-            }
+    // Helper method to perform deletion by course ID recursively
+    private static TreeNode deleteByCourseIdRecursive(TreeNode root, int courseIdToDelete) {
+        // Base case: If the root is null, the course ID is not found, so return null
+        if (root == null) {
+            return root;
         }
 
-        if (root == null)
-            return root;
+        // Find the student node that contains the course ID
+        if (root.courseIds.contains(courseIdToDelete)) {
+            // Remove the course ID from the student's set of course IDs
+            root.courseIds.remove(courseIdToDelete);
 
+            // If the student has no more course IDs, remove the entire student node
+            if (root.courseIds.isEmpty()) {
+                // Node with only one child or no child
+                if (root.left == null) {
+                    return root.right;
+                } else if (root.right == null) {
+                    return root.left;
+                }
+
+                // Node with two children: Get the in-order successor (smallest in the right subtree)
+                root.studentId = minValue(root.right);
+
+                // Delete the in-order successor
+                root.right = deleteByCourseIdRecursive(root.right, root.studentId);
+            }
+        } else if (courseIdToDelete < root.studentId) {
+            root.left = deleteByCourseIdRecursive(root.left, courseIdToDelete);
+        } else {
+            root.right = deleteByCourseIdRecursive(root.right, courseIdToDelete);
+        }
+
+        // Update the height of the current node
         root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+
+        // Rebalance the tree
         return balanceNode(root);
     }
 
-    //
-    static TreeNode minValueNode(TreeNode node) {
-        while (node.left != null)
+    // Helper method to find the smallest node's student ID in a subtree
+    private static int minValue(TreeNode node) {
+        int minValue = node.studentId;
+        while (node.left != null) {
+            minValue = node.left.studentId;
             node = node.left;
-        return node;
+        }
+        return minValue;
     }
     // Function to perform an inorder traversal of the AVL Tree
     void inorderTraversal(TreeNode node) {

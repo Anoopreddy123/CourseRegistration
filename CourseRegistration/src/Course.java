@@ -98,7 +98,7 @@ Course(){
     }else{
             System.out.println("Enter Course ID to drop for the Student ID: " + studentId);
             courseId = scanner.nextInt();
-            AVLTree.delete(AVLTree.root,courseId);
+           AVLTree.deleteByCourseId(courseId);
         }
 }
 
