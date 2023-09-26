@@ -23,19 +23,19 @@ class TreeNode {
 class AVLTree {
     static TreeNode root;
 
-    int getHeight(TreeNode node) {
+    static int getHeight(TreeNode node) {
         if (node == null) {
             return 0;
         }
         return node.height;
     }
-    void updateHeight(TreeNode node) {
+    static void updateHeight(TreeNode node) {
         if (node != null) {
             node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
         }
     }
 
-    TreeNode rightRotate(TreeNode y) {
+    static TreeNode rightRotate(TreeNode y) {
         TreeNode x = y.left;
         TreeNode T2 = x.right;
 
@@ -48,7 +48,7 @@ class AVLTree {
         return x;
     }
 
-    TreeNode leftRotate(TreeNode x) {
+    static TreeNode leftRotate(TreeNode x) {
         TreeNode y = x.right;
         TreeNode T2 = y.left;
 
@@ -61,7 +61,7 @@ class AVLTree {
         return y;
     }
 
-    TreeNode balanceNode(TreeNode node) {
+    static TreeNode balanceNode(TreeNode node) {
         updateHeight(node);
 
         int balance = getHeight(node.left) - getHeight(node.right);
@@ -108,8 +108,48 @@ class AVLTree {
 
         return balanceNode(node);
     }
-    //
 
+
+
+    static void delete(TreeNode root, int key) {
+        AVLTree.root = deleteNode(AVLTree.root, key);
+    }
+    static TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null)
+            return root;
+
+        if (key < root.studentId)
+            root.left = deleteNode(root.left, key);
+        else if (key > root.studentId)
+            root.right = deleteNode(root.right, key);
+        else {
+            if ((root.left == null) || (root.right == null)) {
+                TreeNode temp = (root.left != null) ? root.left : root.right;
+                if (temp == null) {
+                    temp = root;
+                    root = null;
+                } else
+                    root = temp;
+            } else {
+                TreeNode temp = minValueNode(root.right);
+                root.studentId = temp.studentId;
+                root.right = deleteNode(root.right, temp.studentId);
+            }
+        }
+
+        if (root == null)
+            return root;
+
+        root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+        return balanceNode(root);
+    }
+
+    //
+    static TreeNode minValueNode(TreeNode node) {
+        while (node.left != null)
+            node = node.left;
+        return node;
+    }
     // Function to perform an inorder traversal of the AVL Tree
     void inorderTraversal(TreeNode node) {
         if (node != null) {

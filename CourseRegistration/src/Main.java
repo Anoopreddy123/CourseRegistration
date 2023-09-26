@@ -47,6 +47,7 @@ public class Main {
 
                 else if(Objects.equals(input, "5"))
                     course.displayStudentSchedule();
+
                 else
                     return;
 
